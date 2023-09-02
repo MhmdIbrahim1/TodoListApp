@@ -76,8 +76,8 @@
     <color name="color_size_background">#97AABD</color>
     <color name="color_button_address">#97AABD</color>
 
-    <color name="button_color_end">#a5daeb</color>
-    <color name="button_color_start">#c7e8f3</color>
+    <color name="button_color_end">#7BD1ED</color>
+    <color name="button_color_start">#05485F</color>
     <color name="bottom_nav_color">@color/status_bar_color</color>
 
     //onboarding colors

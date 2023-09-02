@@ -4,39 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color_general"
     tools:context=".fragments.AddTaskTitleFragment">
-
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarAddTaskTitle"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/status_bar_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tvAddTaskTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_light"
-                android:text="@string/add_task_title"
-                android:textColor="@color/white"
-                android:textSize="@dimen/h4TextSize"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.538" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/rightGuideLine"
@@ -65,7 +34,7 @@
         app:hintTextColor="@color/status_bar_color"
         app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
         app:layout_constraintStart_toStartOf="@id/leftGuideLine"
-        app:layout_constraintTop_toBottomOf="@id/toolbarAddTaskTitle">
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/title_et"

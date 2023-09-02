@@ -3,7 +3,9 @@ package com.example.todolistapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -23,12 +25,29 @@ public class OnBoardingActivity extends AppCompatActivity {
     ViewPager mSLideViewPager;
     LinearLayout mDotLayout;
 
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String ONBOARDING_COMPLETE_KEY = "onboardingComplete";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityOnBoardingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+        // Check if onboarding has been completed before
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        if (settings.getBoolean(ONBOARDING_COMPLETE_KEY, false)) {
+            // Onboarding has been completed before, skip it
+            Intent i = new Intent(OnBoardingActivity.this,MainActivity.class);
+            startActivity(i);
+            finish();
+        } else {
+            // Onboarding has not been completed before, show it
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(ONBOARDING_COMPLETE_KEY, true);
+            editor.apply();
+        }
 
         binding.backbtn.setOnClickListener(v -> {
             if (getitem(0) > 0) {
@@ -37,7 +56,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         });
 
         binding.nextbtn.setOnClickListener(v -> {
-            if (getitem(0) < 3)
+            if (getitem(0) < 2)
                 mSLideViewPager.setCurrentItem(getitem(1),true);
             else {
 
@@ -67,10 +86,11 @@ public class OnBoardingActivity extends AppCompatActivity {
 
         //hide action bar
         Objects.requireNonNull(getSupportActionBar()).hide();
+
     }
 
     private void setUpIndicator(int position) {
-        dots = new TextView[4];
+        dots = new TextView[3];
         mDotLayout.removeAllViews();
 
         for (int i = 0; i < dots.length; i++) {
@@ -121,4 +141,11 @@ public class OnBoardingActivity extends AppCompatActivity {
         return mSLideViewPager.getCurrentItem() + i;
     }
 
+    // change status bar color
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color,getApplicationContext().getTheme()));
+    }
 }

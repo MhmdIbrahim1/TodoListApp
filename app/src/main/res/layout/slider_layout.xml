@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/background_color_general"
     app:flow_horizontalAlign="center">
 
     <ImageView
         android:id="@+id/titleImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/background_color_general"
         android:src="@drawable/image1"/>
 
     <TextView
@@ -21,7 +23,7 @@
         android:fontFamily="@font/poppins_thin"
         android:text="heading one"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/background_intro__mentv_2"
         android:textSize="28dp"/>
 
     <TextView
@@ -32,7 +34,7 @@
         android:fontFamily="@font/poppins"
         android:text="description one"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/background_intro__mentv_2"
         android:textSize="16dp"/>
 
 </LinearLayout>

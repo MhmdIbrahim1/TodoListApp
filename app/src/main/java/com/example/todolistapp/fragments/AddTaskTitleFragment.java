@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -45,7 +46,6 @@ public class AddTaskTitleFragment extends Fragment {
         binding = FragmentAddTaskTitleBinding.inflate(inflater, container, false);
         databaseAdapter = new DatabaseAdapter(requireContext()); // Initialize your database adapter
         databaseAdapter.openDatabase(); // Open the database for writing
-
         return binding.getRoot();
     }
 
@@ -65,7 +65,7 @@ public class AddTaskTitleFragment extends Fragment {
                 binding.titleEt.setText(title);
                 binding.etTask.setText(task);
                 binding.addBtn.setText("Update");
-                binding.tvAddTaskTitle.setText("Update Task");
+
             }
 
         }
@@ -106,16 +106,14 @@ public class AddTaskTitleFragment extends Fragment {
         databaseAdapter.closeDatabase(); // Close the database
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+        // if in update mode, set the title of the action bar to "Update Task" else "Add Task"
+        if (isUpdate) {
+            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Update Task");
+        } else {
+            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Add Task");
+        }
     }
 }

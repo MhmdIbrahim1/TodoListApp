@@ -22,7 +22,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             R.drawable.image1,
             R.drawable.image2,
             R.drawable.image3,
-            R.drawable.image4
+
 
     };
 
@@ -31,15 +31,12 @@ public class ViewPagerAdapter extends PagerAdapter {
             R.string.heading_one,
             R.string.heading_two,
             R.string.heading_three,
-            R.string.heading_fourth
     };
 
     int description[] = {
-
             R.string.desc_one,
             R.string.desc_two,
             R.string.desc_three,
-            R.string.desc_fourth
     };
 
     public ViewPagerAdapter(Context context) {
