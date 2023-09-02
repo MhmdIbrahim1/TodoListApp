@@ -17,7 +17,7 @@ public class StartedScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_started_screen);
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(StartedScreenActivity.this, MainActivity.class));
+            startActivity(new Intent(StartedScreenActivity.this, OnBoardingActivity.class));
             finish();
         }, 3000);
         changeStatusColor();
@@ -32,4 +32,6 @@ public class StartedScreenActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(R.color.status_bar_color, null)); // Change to your desired color resource
     }
+
+
 }

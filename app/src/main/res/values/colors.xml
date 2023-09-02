@@ -80,4 +80,11 @@
     <color name="button_color_start">#c7e8f3</color>
     <color name="bottom_nav_color">@color/status_bar_color</color>
 
+    //onboarding colors
+    <color name="background">#F0F4F3</color>
+    <color name="buttontext">#50C2C9</color>
+
+    //indicator color
+    <color name="inactive">#C4C4C4</color>
+    <color name="active">#50C2C9</color>
 </resources>
