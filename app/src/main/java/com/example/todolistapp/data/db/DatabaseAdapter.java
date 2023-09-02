@@ -140,4 +140,34 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
         }
     }
 
+    // Method to search for tasks in the database
+    public List<Task> searchTasks(String searchQuery) {
+        List<Task> taskList = new ArrayList<>();
+        db.beginTransaction();
+        try (Cursor cur = db.query(TASK_TABLE, null, TASK_TITLE + " LIKE ? OR " + TASK_TASK + " LIKE ?", new String[]{"%" + searchQuery + "%", "%" + searchQuery + "%"}, null, null, null, null)) {
+            // Query all rows from the todo table
+            if (cur != null) {
+                if (cur.moveToFirst()) {
+                    int idIndex = cur.getColumnIndex(TASK_ID);
+                    int titleIndex = cur.getColumnIndex(TASK_TITLE);
+                    int statusIndex = cur.getColumnIndex(TASK_STATUS);
+                    int taskIndex = cur.getColumnIndex(TASK_TASK);
+
+                    do {
+                        // Create a Task object from the retrieved data
+                        Task task = new Task();
+                        task.setId(cur.getInt(idIndex));
+                        task.setTitle(cur.getString(titleIndex));
+                        task.setTask(cur.getString(taskIndex));
+                        task.setStatus(cur.getInt(statusIndex));
+                        taskList.add(task); // Add the task to the list
+                    } while (cur.moveToNext());
+                }
+            }
+        } finally {
+            db.endTransaction(); // End the transaction
+            // Close the cursor
+        }
+        return taskList;
+    }
 }

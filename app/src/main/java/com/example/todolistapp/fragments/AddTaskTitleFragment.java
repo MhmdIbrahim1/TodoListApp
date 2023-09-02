@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -25,6 +26,8 @@ import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.FragmentAddTaskTitleBinding;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Objects;
+
 public class AddTaskTitleFragment extends Fragment {
     private FragmentAddTaskTitleBinding binding;
     private DatabaseAdapter databaseAdapter;
@@ -34,6 +37,7 @@ public class AddTaskTitleFragment extends Fragment {
     private boolean isUpdate = false;
 
     private int taskIdToUpdate = -1;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -95,5 +99,23 @@ public class AddTaskTitleFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+        databaseAdapter.closeDatabase(); // Close the database
+    }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+    }
 }

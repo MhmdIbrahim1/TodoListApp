@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.appcompat.widget.SearchView; // Import the androidx SearchView class
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.R;
@@ -34,6 +36,7 @@ import com.example.todolistapp.data.models.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -62,17 +65,13 @@ public class HomeFragment extends Fragment {
 
 
         setUpRecyclerView();
+        setHasOptionsMenu(true);
 
         // Set up item touch helper for swipe actions
         setUpItemTouchHelperForTaskRv();
 
         // initialize the NavController
         navController = Navigation.findNavController(view);
-
-        binding.deleteAll.setOnClickListener(v -> {
-            // Display a confirmation dialog for task deletion
-            showDeleteConfirmationDialog();
-        });
 
     }
 
@@ -90,6 +89,53 @@ public class HomeFragment extends Fragment {
         taskAdapter.setTasks(taskList);
     }
 
+    //inflate the menu
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.deletemenu, menu);
+        //get the menu item search
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        //get the search view
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        //set the query hint
+        searchView.setQueryHint(getResources().getString(R.string.search));
+        //set the search icon
+
+        // Set a query listener for the search view
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // Called when the user submits the query
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Search the database for tasks that match the query
+                taskList = databaseAdapter.searchTasks(query);
+                // Set the list of tasks on the adapter
+                taskAdapter.setTasks(taskList);
+                return true;
+            }
+
+            // Called when the query text is changed by the user
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Search the database for tasks that match the query
+                taskList = databaseAdapter.searchTasks(newText);
+                // Set the list of tasks on the adapter
+                taskAdapter.setTasks(taskList);
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.delete) {
+            showDeleteConfirmationDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -214,5 +260,14 @@ public class HomeFragment extends Fragment {
         // Attach the custom ItemTouchHelper to the RecyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(binding.recyclerView);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // change the action bar text and color
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Todo-List");
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.status_bar_color, null))); // Use getResources() to get the color
     }
 }
