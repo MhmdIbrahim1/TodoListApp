@@ -4,18 +4,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class Task {
-    private int id;
-    private  String title;
-    private  List<Subtask> subtasks;
+    private int id,status;;
+    private  String title,task;
 
-    public Task(int id, String title, List<Subtask> subtasks) {
+
+    public Task(int id, String title, int status) {
         this.id = id;
         this.title = title;
-        this.subtasks = subtasks;
+        this.status = status;
     }
-    public Task(String title, List<Subtask> subtasks) {
+
+    public Task(String title, String task, int status) {
         this.title = title;
-        this.subtasks = subtasks;
+        this.task = task;
+        this.status = status;
     }
     public Task() {}
 
@@ -35,12 +37,21 @@ public class Task {
     public void setTitle(String title) {
         this.title = title;
     }
-    public List<Subtask> getSubtasks() {
-        return subtasks;
+
+    public int getStatus() {
+        return status;
     }
 
-    public void setSubtasks(List<Subtask> subtasks) {
-        this.subtasks = subtasks;
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
     }
 
     // Implement equals() method to compare tasks

@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">TodoListApp</string>
+    <string name="app_name">To.Do</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="add_task">AddTask</string>
     <string name="tasks_list">Tasks List</string>
-    <string name="add_task_title">Add Task Title</string>
-
+    <string name="add_task_title">Add Task</string>
     <string name="listcheckbox">ListCheckBox</string>
     <string name="newtask">newTask</string>
     <string name="save">Save</string>
@@ -23,4 +22,5 @@
     <string name="confirm">Confirm</string>
     <string name="notename">NoteName</string>
     <string name="notebody">NoteBody</string>
+    <string name="what_do_you_want_to_do">What do you want to do?</string>
 </resources>

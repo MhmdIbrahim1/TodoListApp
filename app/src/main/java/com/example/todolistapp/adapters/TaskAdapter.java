@@ -4,31 +4,29 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.todolistapp.R;
 import com.example.todolistapp.data.db.DatabaseAdapter;
 import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.ItemTaskTitleBinding;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private final Context context;
-    private final AsyncListDiffer<Task> differ;
+    private static AsyncListDiffer<Task> differ = null;
 
-    private DatabaseAdapter databaseAdapter;
+    private static DatabaseAdapter databaseAdapter;
 
     public TaskAdapter(Context context) {
         this.context = context;
-
+        databaseAdapter = new DatabaseAdapter(context);
         // Define the DiffUtil callback
         DiffUtil.ItemCallback<Task> diffCallback = new DiffUtil.ItemCallback<Task>() {
             @Override
@@ -77,14 +75,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             super(binding.getRoot());
             this.binding = binding;
         }
-
         public void bind(Task task) {
-            binding.tvTaskTitle.setText(task.getTitle());
-            // Populate the subtasks RecyclerView with data
-            SubtaskAdapter subtaskAdapter = new SubtaskAdapter(itemView.getContext());
-            subtaskAdapter.setSubtasks(task.getSubtasks());
-            binding.rvTasks.setAdapter(subtaskAdapter);
+            binding.todoTitle.setText(task.getTitle());
+            binding.todoCb.setText(task.getTask());
+            binding.todoCb.setChecked(toBoolean(task.getStatus()));
+
+            binding.todoCb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // Open the database connection before updating
+                databaseAdapter.openDatabase();
+
+                // Update the task status in the database based on CheckBox state
+                if (isChecked) {
+                    databaseAdapter.updateStatus(task.getId(), 1);
+                } else {
+                    databaseAdapter.updateStatus(task.getId(), 0);
+                }
+            });
+            // Close the database connection after updating
+            databaseAdapter.closeDatabase();
+
         }
+
     }
 
+
+    private static boolean toBoolean(int n) {
+
+        return n != 0;
+    }
 }

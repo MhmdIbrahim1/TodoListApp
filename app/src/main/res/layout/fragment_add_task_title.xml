@@ -31,8 +31,10 @@
                 android:textSize="@dimen/h4TextSize"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.538" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -57,6 +59,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_32sdp"
+        app:boxStrokeColor="@color/status_bar_color"
+        app:counterTextColor="@color/status_bar_color"
+        app:prefixTextColor="@color/status_bar_color"
+        app:hintTextColor="@color/status_bar_color"
         app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
         app:layout_constraintStart_toStartOf="@id/leftGuideLine"
         app:layout_constraintTop_toBottomOf="@id/toolbarAddTaskTitle">
@@ -68,7 +74,34 @@
             android:layout_height="wrap_content"
             android:autofillHints="title"
             android:ems="10"
+            android:textColor="@color/background_intro__mentv_2"
             android:hint="Note Title"
+            android:inputType="textImeMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/taskDescription_etLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_32sdp"
+        app:boxStrokeColor="@color/status_bar_color"
+        app:counterTextColor="@color/status_bar_color"
+        app:prefixTextColor="@color/status_bar_color"
+        app:hintTextColor="@color/status_bar_color"
+        app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
+        app:layout_constraintStart_toStartOf="@id/leftGuideLine"
+        app:layout_constraintTop_toBottomOf="@id/taskTitle_etLayout">
+
+        <EditText
+            android:id="@+id/etTask"
+            style="@style/h3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="description"
+            android:ems="10"
+            android:textColor="@color/background_intro__mentv_2"
+            android:hint="Note Description"
             android:inputType="textImeMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,14 +111,14 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_below="@id/taskTitle_etLayout"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/_90sdp"
+        android:layout_marginTop="92dp"
         android:background="@drawable/ccustombutton"
         android:text="@string/add_task"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="@+id/taskTitle_etLayout"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/taskTitle_etLayout"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle_etLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/taskDescription_etLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

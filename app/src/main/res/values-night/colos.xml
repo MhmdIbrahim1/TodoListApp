@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="status_bar_color">#4BA0CE</color>
+<resources>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,16 +7,18 @@
     <color name="lightMediumGray">#40D1D1D1</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FAFDFF</color>
+    <color name="dark">#313C44</color>
+    <color name="darker">#151B20</color>
     <color name="g_pink">#FF9999</color>
     <color name="g_icon_tint">#97AABD</color>
     <color name="g_hint">#666666</color>
     <color name="g_gray700">#666666</color>
     <color name="g_black">#171717</color>
-    <color name="g_blue">#000DAE</color>
+    <color name="g_blue">#63c1da</color>
     <color name="g_white">#F5F8FA</color>
     <color name="g_dark_blue">#000759</color>
-    <color name="g_blue_gray200">#97AABD</color>
+    <color name="g_blue_gray200">@color/white</color>
     <color name="g_light_red">#FF9999</color>
     <color name="g_card_background">#FAFDFF</color>
     <color name="g_search_and_icons">#FAFBFC</color>
@@ -26,14 +27,55 @@
     <color name="g_red">#FF0000</color>
     <color name="g_gray500">#969899</color>
     <color name="g_orange_yellow">#F8BA00</color>
-    <color name="dark">#313C44</color>
-    <color name="darker">#151B20</color>
     <color name="g_green">#11FF00</color>
     <color name="g_text_hint">#969899</color>
-    <color name="g_light_gray">#F5F8FA</color>
+    <color name="g_light_gray">#8F959E</color>
     <color name="g_circle_back_arrow">#F5F6FA</color>
     <color name="g_background_facebook">#4267B2</color>
     <color name="g_background_google">#EA4335</color>
-    <color name="g_background_twitter">#1DA1F2</color>
+    <color name="g_background_twitter">@color/bottom_nav_item_shadow_color</color>
+    <color name="button_men">#8F959E</color>
+    <color name="custom_progress_color">#141313</color>
+    <color name="custom_secondary_progress_color">#00FF00</color>
+    <color name="transparent">#00000000</color>
+    <color name="card_background">#F5F6FA</color>
+    <color name="splash_color">#1B262C</color>
+    <color name="splash_color_ic">#9775FA</color>
+    <color name="background_intro_1">#1B262C</color>
+    <color name="background_intro__card_1">#23262b</color>
+    <color name="background_intro__men_1">#222E34</color>
+    <color name="background_intro__mentv_1">#8F959E</color>
+    <color name="background_intro__mentv_2">#F5F8FB</color>
+    <color name="background_intro__women_1">#9775FA</color>
 
+    <color name="background_intro_2">#1B262C</color>
+    <color name="background_intro__mentv_5">#8F959E</color>
+    <color name="background_intro__mentv_6">@color/g_background_twitter</color>
+
+    <color name="background_color_general">#1c1e20</color>
+    <color name="background_buttom_card">#23262b</color>
+    <color name="circle_image_back">#23262b</color>
+    <color name="arrow_image_back">@color/white</color>
+
+    <color name="brand_rv_background_color">#222E34</color>
+    <color name="brand_rv_background__card_color">#23262b</color>
+
+    <color name="status_bar_color">#1094c1</color>
+    <color name="bottom_nav_item_shadow_color">#63c1da</color>
+    <color name="g_background_twitter_l">#1DA1F2</color>
+    <color name="progress_bar_color">@color/white</color>
+
+    <color name="background_card_cart">#23262b</color>
+    <color name="background_color_general_card">#23262b</color>
+
+
+    <color name="background_box_cart">@color/g_white</color>
+
+    <color name="background_color_general_Card">@color/background_color_general_card</color>
+
+    <color name="color_size_background">@color/background_color_general_card</color>
+
+    <color name="color_button_address">@color/background_color_general_card</color>
+
+    <color name="bottom_nav_color">@color/background_color_general_card</color>
 </resources>

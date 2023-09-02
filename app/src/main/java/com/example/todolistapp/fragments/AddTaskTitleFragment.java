@@ -21,6 +21,7 @@ import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.R;
 import com.example.todolistapp.adapters.TaskAdapter;
 import com.example.todolistapp.data.db.DatabaseAdapter;
+import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.FragmentAddTaskTitleBinding;
 import com.google.android.material.navigation.NavigationView;
 
@@ -56,8 +57,11 @@ public class AddTaskTitleFragment extends Fragment {
             if (isUpdate) {
                 // If in update mode, set the task text and update button state
                 String title = bundle.getString("title");
+                String task = bundle.getString("task");
                 binding.titleEt.setText(title);
+                binding.etTask.setText(task);
                 binding.addBtn.setText("Update");
+                binding.tvAddTaskTitle.setText("Update Task");
             }
 
         }
@@ -65,19 +69,27 @@ public class AddTaskTitleFragment extends Fragment {
 
         binding.addBtn.setOnClickListener(v -> {
             String title = binding.titleEt.getText().toString().trim();
+            String task = binding.etTask.getText().toString().trim();
+
             if(TextUtils.isEmpty(title)) {
                 Toast.makeText(requireContext(), "Please enter a title", Toast.LENGTH_SHORT).show();
             }else {
                 if(isUpdate){
                     if (taskIdToUpdate != -1) {
-                        databaseAdapter.updateTask(taskIdToUpdate, title);
+                        databaseAdapter.updateTask(taskIdToUpdate, title,task);
                         Toast.makeText(requireContext(), "Task updated", Toast.LENGTH_SHORT).show();
                         findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
+                        // update the bottom navigation item to home
+                        MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
+                        bottomNavigation.show(1,true);
                     }
                 }else {
-                    databaseAdapter.insertTask(title);
+                    databaseAdapter.insertTask(new Task(title,task,0));
                     Toast.makeText(requireContext(), "Task added", Toast.LENGTH_SHORT).show();
                     findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
+                    // update the bottom navigation item to home
+                    MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
+                    bottomNavigation.show(1,true);
                 }
             }
         });

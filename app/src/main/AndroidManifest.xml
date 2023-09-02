@@ -12,8 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TodoListApp"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".StartedScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

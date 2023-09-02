@@ -35,12 +35,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnClickMenuListener(model -> {
             switch (model.getId()) {
                 case 1:
-                    // Use NavController to navigate to the HomeFragment
-                    navController.navigate(R.id.homeFragment);
+                    // Use custom animations when navigating to HomeFragment
+                    navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
                     break;
                 case 2:
-                    // Use NavController to navigate to the AddTaskTitleFragment
-                    navController.navigate(R.id.addTaskTitleFragment);
+                    // Use custom animations when navigating to AddTaskTitleFragment
+                    navController.navigate(R.id.action_homeFragment_to_addTaskTitleFragment);
                     break;
             }
             return null;
@@ -60,6 +60,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().setStatusBarColor(getResources().getColor(R.color.g_background_twitter, getTheme()));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color, getTheme()));
     }
 }

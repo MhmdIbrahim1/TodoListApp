@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_addTaskTitleFragment"
-            app:destination="@id/addTaskTitleFragment" />
+            app:destination="@id/addTaskTitleFragment"
+            app:enterAnim="@anim/from_right" />
+
     </fragment>
     <fragment
         android:id="@+id/addTaskTitleFragment"
@@ -21,6 +23,9 @@
         tools:layout="@layout/fragment_add_task_title" >
         <action
             android:id="@+id/action_addTaskTitleFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/from_left" />
     </fragment>
 </navigation>

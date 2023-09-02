@@ -12,23 +12,17 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.R;
 import com.example.todolistapp.data.db.DatabaseAdapter;
-import com.example.todolistapp.data.models.Subtask;
 import com.example.todolistapp.databinding.FragmentHomeBinding;
 
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -44,10 +38,10 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TaskAdapter taskAdapter;
-
     private DatabaseAdapter databaseAdapter;
 
     private List<Task> taskList = new ArrayList<>();
+
 
     private NavController navController;
 
@@ -70,13 +64,51 @@ public class HomeFragment extends Fragment {
         setUpRecyclerView();
 
         // Set up item touch helper for swipe actions
-        setUpItemTouchHelper();
+        setUpItemTouchHelperForTaskRv();
 
         // initialize the NavController
         navController = Navigation.findNavController(view);
+
+        binding.deleteAll.setOnClickListener(v -> {
+            // Display a confirmation dialog for task deletion
+            showDeleteConfirmationDialog();
+        });
+
     }
 
-    private void setUpItemTouchHelper() {
+    private void setUpRecyclerView() {
+        taskAdapter = new TaskAdapter(requireContext());
+        // Set the task adapter on the RecyclerView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        binding.recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setAdapter(taskAdapter);
+
+        // Get all tasks from the database
+        taskList = databaseAdapter.getAllTasks();
+
+        // Set the list of tasks on the adapter
+        taskAdapter.setTasks(taskList);
+    }
+
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(getResources().getString(R.string.deleteall));
+        builder.setMessage(getResources().getString(R.string.deleteMessage));
+        builder.setPositiveButton(getResources().getString(R.string.confirm), (dialog, which) -> {
+            // Delete all tasks
+            databaseAdapter.deleteAllTasks();
+            taskList.clear();
+            // Notify the adapter of the change in the data set
+            taskAdapter.notifyDataSetChanged();
+        });
+        builder.setNegativeButton(getResources().getString(R.string.cancel), null);
+        builder.show();
+
+    }
+
+
+    private void setUpItemTouchHelperForTaskRv() {
         // Create an ItemTouchHelper instance
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -111,14 +143,17 @@ public class HomeFragment extends Fragment {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                }else if (direction == ItemTouchHelper.RIGHT) {
+                } else if (direction == ItemTouchHelper.RIGHT) {
                     // Edit the task
                     Task task = taskList.get(position);
                     Bundle bundle = new Bundle();
                     bundle.putInt("id", task.getId());
                     bundle.putString("title", task.getTitle());
-
+                    bundle.putString("task", task.getTask());
                     navController.navigate(R.id.action_homeFragment_to_addTaskTitleFragment, bundle);
+                    // update the bottom navigation item to home
+                    MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
+                    bottomNavigation.show(2,true);
                 }
             }
 
@@ -137,7 +172,7 @@ public class HomeFragment extends Fragment {
                     background = new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.status_bar_color));
                 } else {
                     icon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete);
-                    background = new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.g_red ));
+                    background = new ColorDrawable(ContextCompat.getColor(requireContext(), R.color.g_red));
                 }
 
                 assert icon != null;
@@ -180,26 +215,4 @@ public class HomeFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(binding.recyclerView);
     }
-
-
-    private void setUpRecyclerView() {
-        taskAdapter = new TaskAdapter(requireContext());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        binding.recyclerView.setLayoutManager(layoutManager);
-        binding.recyclerView.setAdapter(taskAdapter);
-
-        // Get all tasks from the database
-        taskList = databaseAdapter.getAllTasks();
-
-        // Set the list of tasks on the adapter
-        taskAdapter.setTasks(taskList);
-
-        //get the subtasks for each task
-        for (Task task : taskList) {
-            List<Subtask> subtasks = databaseAdapter.getAllSubtasks();
-            task.setSubtasks(subtasks);
-        }
-    }
-
-
 }
