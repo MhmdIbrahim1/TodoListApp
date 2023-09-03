@@ -11,10 +11,14 @@ import com.example.todolistapp.databinding.ActivityMainBinding;
 import com.example.todolistapp.fragments.AddTaskTitleFragment;
 import com.example.todolistapp.fragments.HomeFragment;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavController navController;
-    private int currentNavItem = 1; // Default to the first item
+
+    // Declare the currentNavItem variable
+    private int currentNavItem = 1;
 
     // Declare the bottom navigation
     private MeowBottomNavigation bottomNavigation;
@@ -60,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
             return null;
         });
 
+        int currentDestinationId = Objects.requireNonNull(navController.getCurrentDestination()).getId();
+
+        if (currentDestinationId == R.id.homeFragment) {
+            currentNavItem = 1; // Update to Home
+        } else if (currentDestinationId == R.id.addTaskTitleFragment) {
+            currentNavItem = 2; // Update to Add
+        }
+
     }
 
     // change the status bar color
@@ -69,17 +81,24 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color, getTheme()));
     }
 
+
+    // Update the bottom navigation item
+    private void updateBottomNavigation(int navItem) {
+        bottomNavigation.show(navItem, true);
+    }
     @Override
     public void onBackPressed() {
-        if (currentNavItem != 1) {
+        int currentDestinationId = navController.getCurrentDestination().getId();
+
+        if (currentDestinationId != R.id.homeFragment) {
             // If not in the HomeFragment, navigate back to it and update the bottom navigation
             navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
-            bottomNavigation.show(1, true); // Update the bottom navigation item to Home
-            currentNavItem = 1;
+            updateBottomNavigation(1); // Update the bottom navigation item to Home
         } else {
-            super.onBackPressed(); // Default behavior for back button
+            super.onBackPressed();
         }
     }
+
 
 }
 

@@ -158,6 +158,7 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
                     int titleIndex = cur.getColumnIndex(TASK_TITLE);
                     int statusIndex = cur.getColumnIndex(TASK_STATUS);
                     int taskIndex = cur.getColumnIndex(TASK_TASK);
+                    int dateIndex = cur.getColumnIndex(TASK_DATE);
 
                     do {
                         // Create a Task object from the retrieved data
@@ -166,6 +167,7 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
                         task.setTitle(cur.getString(titleIndex));
                         task.setTask(cur.getString(taskIndex));
                         task.setStatus(cur.getInt(statusIndex));
+                        task.setDate(cur.getLong(dateIndex));
                         taskList.add(task); // Add the task to the list
                     } while (cur.moveToNext());
                 }

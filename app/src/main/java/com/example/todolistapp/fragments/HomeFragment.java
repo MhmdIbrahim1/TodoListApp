@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
         taskList = databaseAdapter.getAllTasks();
 
         // Set the list of tasks on the adapter
-        taskAdapter.setTasks(taskList);
+        taskAdapter.differ.submitList(taskList);
 
         // Add layout animation to the RecyclerView
         Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.recyclerrview_animation);
@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
                 // Search the database for tasks that match the query
                 taskList = databaseAdapter.searchTasks(query);
                 // Set the list of tasks on the adapter
-                taskAdapter.setTasks(taskList);
+                taskAdapter.differ.submitList(taskList);
                 return true;
             }
 
@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
                 // Search the database for tasks that match the query
                 taskList = databaseAdapter.searchTasks(newText);
                 // Set the list of tasks on the adapter
-                taskAdapter.setTasks(taskList);
+                taskAdapter.differ.submitList(taskList);
                 return true;
             }
         });
@@ -153,8 +153,9 @@ public class HomeFragment extends Fragment {
             // Delete all tasks
             databaseAdapter.deleteAllTasks();
             taskList.clear();
+            taskAdapter.differ.submitList(taskList);
             // Notify the adapter of the change in the data set
-            taskAdapter.notifyDataSetChanged();
+            taskAdapter.notifyItemRangeChanged(0, taskAdapter.getItemCount());
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel), null);
         builder.show();

@@ -26,7 +26,7 @@ import java.util.Locale;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private final Context context;
-    private static AsyncListDiffer<Task> differ = null;
+    public  AsyncListDiffer<Task> differ = null;
 
     private static DatabaseAdapter databaseAdapter;
 
@@ -51,9 +51,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     // Setter for the list of tasks
-    public void setTasks(List<Task> tasks) {
-        differ.submitList(tasks);
-    }
+//    public void setTasks(List<Task> tasks) {
+//        differ.submitList(tasks);
+//    }
 
     @NonNull
     @Override
