@@ -5,6 +5,8 @@ import static android.app.Activity.RESULT_OK;
 
 import static androidx.navigation.Navigation.findNavController;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
@@ -27,6 +30,10 @@ import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.FragmentAddTaskTitleBinding;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AddTaskTitleFragment extends Fragment {
@@ -39,6 +46,7 @@ public class AddTaskTitleFragment extends Fragment {
 
     private int taskIdToUpdate = -1;
 
+    private Long selectedDate = null; // Store the selected date
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -62,8 +70,10 @@ public class AddTaskTitleFragment extends Fragment {
                 // If in update mode, set the task text and update button state
                 String title = bundle.getString("title");
                 String task = bundle.getString("task");
+                long date = bundle.getLong("date");
                 binding.titleEt.setText(title);
                 binding.etTask.setText(task);
+                binding.dateBtn.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date(date)));
                 binding.addBtn.setText("Update");
 
             }
@@ -75,29 +85,63 @@ public class AddTaskTitleFragment extends Fragment {
             String title = binding.titleEt.getText().toString().trim();
             String task = binding.etTask.getText().toString().trim();
 
-            if(TextUtils.isEmpty(title)) {
+            if (TextUtils.isEmpty(title)) {
                 Toast.makeText(requireContext(), "Please enter a title", Toast.LENGTH_SHORT).show();
-            }else {
-                if(isUpdate){
+            } else {
+                if (isUpdate) {
                     if (taskIdToUpdate != -1) {
-                        databaseAdapter.updateTask(taskIdToUpdate, title,task);
+                        databaseAdapter.updateTask(taskIdToUpdate, title, task, selectedDate);
                         Toast.makeText(requireContext(), "Task updated", Toast.LENGTH_SHORT).show();
                         findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
                         // update the bottom navigation item to home
                         MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                        bottomNavigation.show(1,true);
+                        bottomNavigation.show(1, true);
                     }
-                }else {
-                    databaseAdapter.insertTask(new Task(title,task,0));
-                    Toast.makeText(requireContext(), "Task added", Toast.LENGTH_SHORT).show();
-                    findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
-                    // update the bottom navigation item to home
-                    MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                    bottomNavigation.show(1,true);
+                } else {
+                    if (selectedDate != null) {
+                        // Create a new Task object with the selected date
+                        Task newTask = new Task(title, task, 0, selectedDate);
+                        databaseAdapter.insertTask(newTask);
+                        Toast.makeText(requireContext(), "Task added", Toast.LENGTH_SHORT).show();
+                        findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
+                        // update the bottom navigation item to home
+                        MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
+                        bottomNavigation.show(1, true);
+                    } else {
+                        Toast.makeText(requireContext(), "Please select a date", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+
+        binding.dateBtn.setOnClickListener(v -> showDatePickerDialog());
+
     }
+
+
+    private Calendar calendar = Calendar.getInstance();
+
+    private void showDatePickerDialog() {
+        Context context = getContext();
+        if (context != null) {
+            DatePickerDialog dialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                    binding.dateBtn.setText(day + "-" + (month + 1) + "-" + year);
+                    calendar.set(year, month, day);
+                    // To ignore time
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+
+                    selectedDate = calendar.getTimeInMillis(); // Store the selected date
+                }
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
+        }
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -116,4 +160,6 @@ public class AddTaskTitleFragment extends Fragment {
             Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Add Task");
         }
     }
+
+
 }

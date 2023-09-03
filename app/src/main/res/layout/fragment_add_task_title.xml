@@ -80,14 +80,29 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_below="@id/taskTitle_etLayout"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/ccustombutton"
         android:text="@string/add_task"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="@+id/taskTitle_etLayout"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/taskTitle_etLayout"
+        app:layout_constraintTop_toBottomOf="@+id/date_btn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/date_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:text="Date"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp"
+        android:background="@drawable/ccustombutton"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuideLine"
+        app:layout_constraintStart_toStartOf="@+id/taskDescription_etLayout"
         app:layout_constraintTop_toBottomOf="@+id/taskDescription_etLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

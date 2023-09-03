@@ -18,6 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+
 import androidx.appcompat.widget.SearchView; // Import the androidx SearchView class
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
@@ -87,6 +91,10 @@ public class HomeFragment extends Fragment {
 
         // Set the list of tasks on the adapter
         taskAdapter.setTasks(taskList);
+
+        // Add layout animation to the RecyclerView
+        Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.recyclerrview_animation);
+        binding.recyclerView.setLayoutAnimation(new LayoutAnimationController(animation));
     }
 
     //inflate the menu
@@ -196,6 +204,7 @@ public class HomeFragment extends Fragment {
                     bundle.putInt("id", task.getId());
                     bundle.putString("title", task.getTitle());
                     bundle.putString("task", task.getTask());
+                    bundle.putLong("date", task.getDate());
                     navController.navigate(R.id.action_homeFragment_to_addTaskTitleFragment, bundle);
                     // update the bottom navigation item to home
                     MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);

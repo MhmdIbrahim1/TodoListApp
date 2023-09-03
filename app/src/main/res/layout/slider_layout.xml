@@ -19,19 +19,21 @@
         android:id="@+id/texttitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:fontFamily="@font/poppins_thin"
         android:text="heading one"
         android:textAlignment="center"
         android:textColor="@color/background_intro__mentv_2"
-        android:textSize="28dp"/>
+        android:textSize="22dp" />
 
     <TextView
         android:id="@+id/textdeccription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_light"
         android:text="description one"
         android:textAlignment="center"
         android:textColor="@color/background_intro__mentv_2"

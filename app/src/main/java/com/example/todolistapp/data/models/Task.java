@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Task {
     private int id,status;;
     private  String title,task;
-
+    private Long date;
 
     public Task(int id, String title, int status) {
         this.id = id;
@@ -14,10 +14,11 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String title, String task, int status) {
+    public Task(String title, String task, int status, Long date) {
         this.title = title;
         this.task = task;
         this.status = status;
+        this.date = date;
     }
     public Task() {}
 
@@ -65,5 +66,13 @@ public class Task {
         }
         Task otherTask = (Task) obj;
         return Objects.equals(title, otherTask.title);
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+    public void setDate(Long date) {
+        this.date = date;
     }
 }

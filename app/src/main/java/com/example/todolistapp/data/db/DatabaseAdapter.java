@@ -17,6 +17,7 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
 
     // Task table name and columns
+    public static final String TASK_DATE = "date"; // Add this line for the date column
     public static final String TASK_TABLE = "task";
     public static final String TASK_ID = "id";
     public static final String TASK_TITLE = "title";
@@ -27,7 +28,8 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
     // Create table statements
     private static final String CREATE_TASK_TABLE = "CREATE TABLE " + TASK_TABLE + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TASK_TITLE + " TEXT, "
             + TASK_TASK + " TEXT, "
-            + TASK_STATUS + " INTEGER)";
+            + TASK_STATUS + " INTEGER, "
+            + TASK_DATE + " INTEGER)";
 
     public DatabaseAdapter(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -74,13 +76,15 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
         cv.put(TASK_TITLE, task.getTitle());
         cv.put(TASK_TASK, task.getTask());
         cv.put(TASK_STATUS, task.getStatus());
+        cv.put(TASK_DATE, task.getDate()); // Insert the date value
         db.insert(TASK_TABLE, null, cv);
     }
 
-    public void updateTask(int id, String title, String task) {
+    public void updateTask(int id, String title, String task, Long date) {
         ContentValues cv = new ContentValues();
         cv.put(TASK_TITLE, title);
         cv.put(TASK_TASK, task);
+        cv.put(TASK_DATE, date);
         db.update(TASK_TABLE, cv, TASK_ID + "=?", new String[]{String.valueOf(id)});
 
     }
@@ -108,6 +112,7 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
                     int titleIndex = cur.getColumnIndex(TASK_TITLE);
                     int statusIndex = cur.getColumnIndex(TASK_STATUS);
                     int taskIndex = cur.getColumnIndex(TASK_TASK);
+                    int dateIndex = cur.getColumnIndex(TASK_DATE); // Add this line for the date column
 
                     do {
                         // Create a Task object from the retrieved data
@@ -116,6 +121,7 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
                         task.setTitle(cur.getString(titleIndex));
                         task.setTask(cur.getString(taskIndex));
                         task.setStatus(cur.getInt(statusIndex));
+                        task.setDate(cur.getLong(dateIndex)); // Add this line for the date column
                         taskList.add(task); // Add the task to the list
                     } while (cur.moveToNext());
                 }
@@ -170,4 +176,6 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
         }
         return taskList;
     }
+
+
 }

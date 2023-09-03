@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,11 +13,15 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolistapp.R;
 import com.example.todolistapp.data.db.DatabaseAdapter;
 import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.ItemTaskTitleBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
@@ -60,12 +66,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = differ.getCurrentList().get(position);
         holder.bind(task);
+
     }
 
     @Override
     public int getItemCount() {
         return differ.getCurrentList().size();
     }
+
+
 
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
@@ -75,11 +84,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             super(binding.getRoot());
             this.binding = binding;
         }
+
         public void bind(Task task) {
             binding.todoTitle.setText(task.getTitle());
             binding.todoCb.setText(task.getTask());
             binding.todoCb.setChecked(toBoolean(task.getStatus()));
 
+            // Set the task ID as a tag to the CheckBox
             binding.todoCb.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 // Open the database connection before updating
                 databaseAdapter.openDatabase();
@@ -91,9 +102,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     databaseAdapter.updateStatus(task.getId(), 0);
                 }
             });
+
+            //set the date format
+            if (task.getDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                String formattedDate = sdf.format(new Date(task.getDate()));
+                binding.todoDate.setText(formattedDate);
+            } else {
+                binding.todoDate.setText(""); // Clear the date TextView if there's no date
+            }
+
+
             // Close the database connection after updating
             databaseAdapter.closeDatabase();
-
         }
 
     }

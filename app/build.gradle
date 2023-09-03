@@ -55,4 +55,7 @@ dependencies {
     //recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
+    // calendar view
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+
 }
