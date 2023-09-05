@@ -87,4 +87,7 @@
     //indicator color
     <color name="inactive">#C4C4C4</color>
     <color name="active">#50C2C9</color>
+
+    //onboarding colors
+    <color name="b_m_e">#F5F8FA</color>
 </resources>

@@ -11,7 +11,7 @@
     <string name="save">Save</string>
     <string name="new_task">new_task\n</string>
     <string name="cancel">Cancel</string>
-    <string name="deleteall">DeleteAll</string>
+    <string name="deleteall">Delete All</string>
     <string name="deleteMessage">Are you sure you want to delete all tasks?</string>
     <string name="delete">Delete</string>
     <string name="enterTask">Please enter a task name and body correct</string>

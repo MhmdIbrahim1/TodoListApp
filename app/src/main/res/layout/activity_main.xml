@@ -27,9 +27,9 @@
         app:mbn_circleColor="@color/background_intro__mentv_2"
         app:mbn_backgroundBottomColor="@color/bottom_nav_color"
         app:mbn_countBackgroundColor="@color/status_bar_color"
-        app:mbn_defaultIconColor="@color/black"
+        app:mbn_defaultIconColor="@color/arrow_image_back"
         app:mbn_selectedIconColor="@color/status_bar_color"
-        android:background="@color/g_light_gray"
+        android:background="@color/b_m_e"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
