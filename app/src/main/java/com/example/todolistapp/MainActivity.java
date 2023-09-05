@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.databinding.ActivityMainBinding;
-import com.example.todolistapp.fragments.AddTaskTitleFragment;
-import com.example.todolistapp.fragments.HomeFragment;
+import com.example.todolistapp.helper.LocaleHelper;
 
 import java.util.Objects;
 
@@ -17,16 +19,18 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private NavController navController;
 
-    // Declare the currentNavItem variable
-    private int currentNavItem = 1;
-
-    // Declare the bottom navigation
     private MeowBottomNavigation bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        // Retrieve the language setting from SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        String language = sharedPref.getString("language", "ar"); // default English if no setting is stored
+        // Set the language based on the stored setting
+        LocaleHelper.setLocale(this, language);
+
         setContentView(binding.getRoot());
 
         // Initialize NavController
@@ -36,20 +40,33 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = binding.bottomNavigation;
 
         // add the bottom navigation
-        bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
         bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_add));
+        bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
+        bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.ic_language));
 
         // set the bottom nav listener
         bottomNavigation.setOnClickMenuListener(model -> {
-            currentNavItem = model.getId(); // Update the currentNavItem
             switch (model.getId()) {
                 case 1:
-                    // Use custom animations when navigating to HomeFragment
-                    navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
+                    if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.addTaskTitleFragment) {
+                        navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
+                    } else if (navController.getCurrentDestination().getId() == R.id.languageFragment) {
+                        navController.navigate(R.id.action_languageFragment_to_homeFragment);
+                    }
                     break;
                 case 2:
-                    // Use custom animations when navigating to AddTaskTitleFragment
-                    navController.navigate(R.id.action_homeFragment_to_addTaskTitleFragment);
+                    if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment) {
+                        navController.navigate(R.id.action_homeFragment_to_addTaskTitleFragment);
+                    } else if (navController.getCurrentDestination().getId() == R.id.languageFragment) {
+                        navController.navigate(R.id.action_languageFragment_to_addTaskTitleFragment);
+                    }
+                    break;
+                case 3:
+                    if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment) {
+                        navController.navigate(R.id.action_homeFragment_to_languageFragment);
+                    } else if (navController.getCurrentDestination().getId() == R.id.addTaskTitleFragment) {
+                        navController.navigate(R.id.action_addTaskTitleFragment_to_languageFragment);
+                    }
                     break;
             }
             return null;
@@ -64,13 +81,6 @@ public class MainActivity extends AppCompatActivity {
             return null;
         });
 
-        int currentDestinationId = Objects.requireNonNull(navController.getCurrentDestination()).getId();
-
-        if (currentDestinationId == R.id.homeFragment) {
-            currentNavItem = 1; // Update to Home
-        } else if (currentDestinationId == R.id.addTaskTitleFragment) {
-            currentNavItem = 2; // Update to Add
-        }
 
     }
 
@@ -83,19 +93,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Update the bottom navigation item
-    private void updateBottomNavigation(int navItem) {
-        bottomNavigation.show(navItem, true);
+    private void updateBottomNavigation() {
     }
+
     @Override
     public void onBackPressed() {
-        int currentDestinationId = navController.getCurrentDestination().getId();
+        int currentDestinationId = Objects.requireNonNull(navController.getCurrentDestination()).getId();
 
-        if (currentDestinationId != R.id.homeFragment) {
-            // If not in the HomeFragment, navigate back to it and update the bottom navigation
-            navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
-            updateBottomNavigation(1); // Update the bottom navigation item to Home
-        } else {
+        if (currentDestinationId == R.id.homeFragment) {
             super.onBackPressed();
+        } else if (currentDestinationId == R.id.addTaskTitleFragment) {
+            navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
+            bottomNavigation.show(2, true);
+        } else if (currentDestinationId == R.id.languageFragment) {
+            navController.navigate(R.id.action_languageFragment_to_homeFragment);
+            bottomNavigation.show(2, true);
         }
     }
 

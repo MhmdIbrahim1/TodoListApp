@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_add"
         android:title="@string/add_task" />
 
+    <item
+        android:id="@+id/languageFragment"
+        android:icon="@drawable/ic_language"
+        android:title="@string/language" />
+
 </menu>

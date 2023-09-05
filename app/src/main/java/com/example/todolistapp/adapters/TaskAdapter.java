@@ -1,38 +1,31 @@
 package com.example.todolistapp.adapters;
-
+import android.app.DatePickerDialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.todolistapp.R;
 import com.example.todolistapp.data.db.DatabaseAdapter;
 import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.ItemTaskTitleBinding;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private final Context context;
-    public  AsyncListDiffer<Task> differ = null;
-
+    public final AsyncListDiffer<Task> differ;
     private static DatabaseAdapter databaseAdapter;
 
     public TaskAdapter(Context context) {
         this.context = context;
         databaseAdapter = new DatabaseAdapter(context);
+
         // Define the DiffUtil callback
         DiffUtil.ItemCallback<Task> diffCallback = new DiffUtil.ItemCallback<Task>() {
             @Override
@@ -50,11 +43,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         differ = new AsyncListDiffer<>(this, diffCallback);
     }
 
-    // Setter for the list of tasks
-//    public void setTasks(List<Task> tasks) {
-//        differ.submitList(tasks);
-//    }
-
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,7 +54,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         Task task = differ.getCurrentList().get(position);
         holder.bind(task);
-
     }
 
     @Override
@@ -74,11 +61,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return differ.getCurrentList().size();
     }
 
-
-
-
-    public static class TaskViewHolder extends RecyclerView.ViewHolder {
+    public class TaskViewHolder extends RecyclerView.ViewHolder {
         private final ItemTaskTitleBinding binding;
+        private final Calendar calendar = Calendar.getInstance();
 
         public TaskViewHolder(ItemTaskTitleBinding binding) {
             super(binding.getRoot());
@@ -101,27 +86,53 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 } else {
                     databaseAdapter.updateStatus(task.getId(), 0);
                 }
+
+                // Close the database connection after updating
+                databaseAdapter.closeDatabase();
             });
 
-            //set the date format
+            // Set the date format
             if (task.getDate() != null) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                String formattedDate = sdf.format(new Date(task.getDate()));
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE - MMM - d", Locale.getDefault());
+                String formattedDate = simpleDateFormat.format(new Date(task.getDate()));
                 binding.todoDate.setText(formattedDate);
             } else {
                 binding.todoDate.setText(""); // Clear the date TextView if there's no date
             }
 
-
-            // Close the database connection after updating
-            databaseAdapter.closeDatabase();
+            // Open the date picker dialog and update the date
+            binding.todoDate.setOnClickListener(v -> {
+                showDatePickerDialog(task.getId());
+            });
         }
 
+
+        private void showDatePickerDialog(int id) {
+            Context context = binding.getRoot().getContext();
+            if (context != null) {
+                DatePickerDialog dialog = new DatePickerDialog(context, (datePicker, year, month, day) -> {
+                    calendar.clear();
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, day);
+
+                    // Store the selected date in the database
+                    long selectedDate = calendar.getTimeInMillis();
+                    databaseAdapter.openDatabase();
+                    databaseAdapter.updateDate(id, selectedDate);
+
+                    databaseAdapter.closeDatabase();
+
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
+                    String formattedDate = simpleDateFormat.format(calendar.getTime());
+                    binding.todoDate.setText(formattedDate);
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
+            }
+        }
     }
 
-
     private static boolean toBoolean(int n) {
-
         return n != 0;
     }
 }

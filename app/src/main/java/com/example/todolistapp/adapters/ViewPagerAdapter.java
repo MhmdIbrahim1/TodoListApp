@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-
 import com.example.todolistapp.R;
 
 public class ViewPagerAdapter extends PagerAdapter {
@@ -33,7 +31,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             R.string.heading_three,
     };
 
-    int description[] = {
+    int[] description = {
             R.string.desc_one,
             R.string.desc_two,
             R.string.desc_three,
@@ -62,13 +60,13 @@ public class ViewPagerAdapter extends PagerAdapter {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.slider_layout, container, false);
 
-        ImageView slidetitleimage = (ImageView) view.findViewById(R.id.titleImage);
+        ImageView slideTitleImage = (ImageView) view.findViewById(R.id.titleImage);
         TextView slideHeading = (TextView) view.findViewById(R.id.texttitle);
-        TextView slideDesciption = (TextView) view.findViewById(R.id.textdeccription);
+        TextView slideDescription = (TextView) view.findViewById(R.id.textdeccription);
 
-        slidetitleimage.setImageResource(images[position]);
+        slideTitleImage.setImageResource(images[position]);
         slideHeading.setText(headings[position]);
-        slideDesciption.setText(description[position]);
+        slideDescription.setText(description[position]);
 
         container.addView(view);
         return view;

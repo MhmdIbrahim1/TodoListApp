@@ -1,35 +1,24 @@
 package com.example.todolistapp.fragments;
 
-
-import static android.app.Activity.RESULT_OK;
-
 import static androidx.navigation.Navigation.findNavController;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
-
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.R;
-import com.example.todolistapp.adapters.TaskAdapter;
 import com.example.todolistapp.data.db.DatabaseAdapter;
 import com.example.todolistapp.data.models.Task;
 import com.example.todolistapp.databinding.FragmentAddTaskTitleBinding;
-import com.google.android.material.navigation.NavigationView;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -73,42 +62,46 @@ public class AddTaskTitleFragment extends Fragment {
                 long date = bundle.getLong("date");
                 binding.titleEt.setText(title);
                 binding.etTask.setText(task);
-                binding.dateBtn.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date(date)));
-                binding.addBtn.setText("Update");
+
+
+                // Store the selected date
+                selectedDate = date;
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE - MMM - d", Locale.getDefault());
+                String formattedDate = simpleDateFormat.format(new Date(date));
+                binding.dateBtn.setText(formattedDate);
 
             }
 
         }
-
 
         binding.addBtn.setOnClickListener(v -> {
             String title = binding.titleEt.getText().toString().trim();
             String task = binding.etTask.getText().toString().trim();
 
             if (TextUtils.isEmpty(title)) {
-                Toast.makeText(requireContext(), "Please enter a title", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.please_enter_a_title, Toast.LENGTH_SHORT).show();
             } else {
                 if (isUpdate) {
                     if (taskIdToUpdate != -1) {
                         databaseAdapter.updateTask(taskIdToUpdate, title, task, selectedDate);
-                        Toast.makeText(requireContext(), "Task updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.task_updated, Toast.LENGTH_SHORT).show();
                         findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
                         // update the bottom navigation item to home
                         MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                        bottomNavigation.show(1, true);
+                        bottomNavigation.show(2, true);
                     }
                 } else {
                     if (selectedDate != null) {
                         // Create a new Task object with the selected date
                         Task newTask = new Task(title, task, 0, selectedDate);
                         databaseAdapter.insertTask(newTask);
-                        Toast.makeText(requireContext(), "Task added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.task_added, Toast.LENGTH_SHORT).show();
                         findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
                         // update the bottom navigation item to home
                         MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                        bottomNavigation.show(1, true);
+                        bottomNavigation.show(2, true);
                     } else {
-                        Toast.makeText(requireContext(), "Please select a date", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.please_select_the_date, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -119,7 +112,7 @@ public class AddTaskTitleFragment extends Fragment {
     }
 
 
-    private Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     private void showDatePickerDialog() {
         Context context = getContext();
@@ -127,8 +120,12 @@ public class AddTaskTitleFragment extends Fragment {
             DatePickerDialog dialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    binding.dateBtn.setText(day + "-" + (month + 1) + "-" + year);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
+                    String formattedDate = simpleDateFormat.format(new Date(year - 1900, month, day));
+                    binding.dateBtn.setText(formattedDate);
+
                     calendar.set(year, month, day);
+
                     // To ignore time
                     calendar.set(Calendar.HOUR_OF_DAY, 0);
                     calendar.set(Calendar.MINUTE, 0);
@@ -155,9 +152,11 @@ public class AddTaskTitleFragment extends Fragment {
         super.onResume();
         // if in update mode, set the title of the action bar to "Update Task" else "Add Task"
         if (isUpdate) {
-            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Update Task");
+            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.update_task);
+            binding.addBtn.setText(R.string.update_task);
         } else {
-            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Add Task");
+            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.addtask);
+            binding.addBtn.setText(R.string.add_task);
         }
     }
 

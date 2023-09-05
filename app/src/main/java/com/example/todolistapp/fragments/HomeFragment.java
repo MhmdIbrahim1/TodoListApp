@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView; // Import the androidx SearchView class
 
@@ -39,6 +40,7 @@ import com.example.todolistapp.adapters.TaskAdapter;
 import com.example.todolistapp.data.models.Task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,12 +97,15 @@ public class HomeFragment extends Fragment {
         // Add layout animation to the RecyclerView
         Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.recyclerrview_animation);
         binding.recyclerView.setLayoutAnimation(new LayoutAnimationController(animation));
+
+        //set the list sort by date by default
+        sortByDate();
     }
 
     //inflate the menu
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.deletemenu, menu);
+        inflater.inflate(R.menu.home_menu, menu);
         //get the menu item search
         MenuItem searchItem = menu.findItem(R.id.action_search);
         //get the search view
@@ -136,14 +141,56 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.delete) {
-            showDeleteConfirmationDialog();
+        int id = item.getItemId();
+
+        if (id == R.id.delete) {
+            // Handle delete action
+            if (taskList.isEmpty()) {
+                Toast.makeText(requireContext(), getResources().getString(R.string.nothing_to_delete), Toast.LENGTH_SHORT).show();
+            } else {
+                showDeleteConfirmationDialog();
+            }
             return true;
+        } else if (id == R.id.sort_by_date) {
+            // Handle sorting by date
+            sortByDate();
+            //notify the adapter
+            return true;
+        } else if (id == R.id.sort_by_title) {
+            // Handle sorting by title
+            sortByTitle();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
+
+    private void sortByTitle() {
+        // Sort taskList by title
+        taskList.sort(Comparator.comparing(Task::getTitle));
+        taskAdapter.differ.submitList(taskList);
+        //notify the adapter
+        taskAdapter.notifyDataSetChanged();
+
+        //animate the recyclerview
+        Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.recyclerrview_animation);
+        binding.recyclerView.setLayoutAnimation(new LayoutAnimationController(animation));
+    }
+
+
+    private void sortByDate() {
+        // Sort taskList by date
+        taskList.sort(Comparator.comparingLong(Task::getDate));
+        taskAdapter.differ.submitList(taskList);
+        //notify the adapter
+        taskAdapter.notifyDataSetChanged();
+
+        //animate the recyclerview
+        Animation animation = AnimationUtils.loadAnimation(requireContext(), R.anim.recyclerrview_animation);
+        binding.recyclerView.setLayoutAnimation(new LayoutAnimationController(animation));
+    }
+
 
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -154,8 +201,7 @@ public class HomeFragment extends Fragment {
             databaseAdapter.deleteAllTasks();
             taskList.clear();
             taskAdapter.differ.submitList(taskList);
-            // Notify the adapter of the change in the data set
-            taskAdapter.notifyItemRangeChanged(0, taskAdapter.getItemCount());
+            taskAdapter.notifyDataSetChanged();
         });
         builder.setNegativeButton(getResources().getString(R.string.cancel), null);
         builder.show();
@@ -209,7 +255,7 @@ public class HomeFragment extends Fragment {
                     navController.navigate(R.id.action_homeFragment_to_addTaskTitleFragment, bundle);
                     // update the bottom navigation item to home
                     MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                    bottomNavigation.show(2,true);
+                    bottomNavigation.show(1,true);
                 }
             }
 
@@ -232,20 +278,24 @@ public class HomeFragment extends Fragment {
                 }
 
                 assert icon != null;
-                int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-                int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-                int iconBottom = iconTop + icon.getIntrinsicHeight();
+
+                // Calculate the size of the icon
+                int iconSize = (int) (itemView.getHeight() * 0.3);
+
+                int iconMargin = (itemView.getHeight() - iconSize) / 2;
+                int iconTop = itemView.getTop() + (itemView.getHeight() - iconSize) / 2;
+                int iconBottom = iconTop + iconSize;
 
                 // Set the icon and background bounds based on the swipe direction
                 if (dX > 0) { // Swiping to the right
                     int iconLeft = itemView.getLeft() + iconMargin;
-                    int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
+                    int iconRight = itemView.getLeft() + iconMargin + iconSize;
                     icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
                     background.setBounds(itemView.getLeft(), itemView.getTop(),
                             itemView.getLeft() + ((int) dX) + backgroundCornerOffset, itemView.getBottom());
                 } else if (dX < 0) { // Swiping to the left
-                    int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+                    int iconLeft = itemView.getRight() - iconMargin - iconSize;
                     int iconRight = itemView.getRight() - iconMargin;
                     icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
@@ -277,7 +327,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // change the action bar text and color
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Todo-List");
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle(R.string.todo_list);
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.status_bar_color, null))); // Use getResources() to get the color
     }
 }

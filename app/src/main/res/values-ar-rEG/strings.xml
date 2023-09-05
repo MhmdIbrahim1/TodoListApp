@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">To.Do</string>
+
+    <string name="hello_blank_fragment">مرحبًا بك في الصفحة الفارغة</string>
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="add_task">إضافة مهمة</string>
+    <string name="tasks_list">قائمة المهام</string>
+    <string name="add_task_title">إضافة مهمة</string>
+    <string name="listcheckbox">قائمة الاختيار</string>
+    <string name="newtask">مهمة جديدة</string>
+    <string name="save">حفظ</string>
+    <string name="new_task">مهمة جديدة\n</string>
+    <string name="cancel">إلغاء</string>
+    <string name="deleteall">حذف الكل</string>
+    <string name="deleteMessage">هل أنت متأكد أنك تريد حذف جميع المهام؟</string>
+    <string name="delete">حذف</string>
+    <string name="enterTask">الرجاء إدخال اسم مهمة ونص صحيح</string>
+    <string name="updateTask">"تم تحديث المهمة"</string>
+    <string name="taskCreated">"تم إنشاء المهمة"</string>
+    <string name="delete_task_dialog_title">حذف المهمة</string>
+    <string name="delete_task_dialog_message">هل أنت متأكد أنك تريد حذف هذه المهمة؟</string>
+    <string name="confirm">تأكيد</string>
+    <string name="notename">اسم المذكرة</string>
+    <string name="notebody">محتوى المذكرة</string>
+    <string name="what_do_you_want_to_do">ما الذي ترغب في القيام به؟</string>
+    <string name="search">بحث</string>
+
+    <!-- Headings -->
+    <string name="heading_one">إضافة وتحديث عناوين ونصوص المهام</string>
+    <string name="heading_two">تصفح مهامك بسهولة والبحث عن العناوين</string>
+    <string name="heading_three">حذف المهام – فردية أو جماعية</string>
+
+    <!-- Description -->
+    <string name="desc_one">هذه الميزة تساعدك على إنشاء وتعديل المهام في تطبيقنا مع تفاصيل إضافية.</string>
+    <string name="desc_two">سيتيح للمستخدمين هذا العملية تصفح المهام بسهولة والبحث عن المهام في تطبيقنا بواسطة عناوينها.</string>
+    <string name="desc_three">سترشد هذه العملية المستخدمين خلال عملية حذف المهام بشكل فردي أو جماعي، مما يضمن لهم السيطرة الكاملة على إدارة المهام.</string>
+    <string name="nothing_to_delete">لا شيء للحذف</string>
+    <string name="update">تحديث</string>
+    <string name="please_enter_a_title">الرجاء إدخال العنوان</string>
+    <string name="task_updated">تم تحديث المهمة</string>
+    <string name="task_added">تمت إضافة المهمة</string>
+    <string name="please_select_the_date">الرجاء تحديد تاريخ</string>
+    <string name="update_task">تحديث المهمة</string>
+    <string name="addtask">إضافة مهمة</string>
+    <string name="date">التاريخ</string>
+    <string name="sort_by_date">ترتيب حسب التاريخ</string>
+    <string name="sort_by_title">ترتيب حسب العنوان</string>
+    <string name="sort">ترتيب</string>
+    <string name="settings">الإعدادات</string>
+
+    <string name="language">اللغة</string>
+    <string name="todo_list">قائمة المهام</string>
+
+
+</resources>

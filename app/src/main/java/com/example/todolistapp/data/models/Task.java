@@ -1,18 +1,11 @@
 package com.example.todolistapp.data.models;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Task {
-    private int id,status;;
+    private int id,status;
     private  String title,task;
     private Long date;
-
-    public Task(int id, String title, int status) {
-        this.id = id;
-        this.title = title;
-        this.status = status;
-    }
 
     public Task(String title, String task, int status, Long date) {
         this.title = title;

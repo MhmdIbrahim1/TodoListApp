@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.todolistapp.adapters.ViewPagerAdapter;
 import com.example.todolistapp.databinding.ActivityOnBoardingBinding;
+import com.example.todolistapp.helper.LocaleHelper;
 
 import java.util.Objects;
 
@@ -33,6 +33,12 @@ public class OnBoardingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityOnBoardingBinding.inflate(getLayoutInflater());
+
+        // Retrieve the language setting from SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        String language = sharedPref.getString("language", "ar"); // default English if no setting is stored
+        // Set the language based on the stored setting
+        LocaleHelper.setLocale(this, language);
         setContentView(binding.getRoot());
 
         // Check if onboarding has been completed before
@@ -43,14 +49,14 @@ public class OnBoardingActivity extends AppCompatActivity {
         }
 
         binding.backbtn.setOnClickListener(v -> {
-            if (getitem(0) > 0) {
-                mSLideViewPager.setCurrentItem(getitem(-1), true);
+            if (getItem(0) > 0) {
+                mSLideViewPager.setCurrentItem(getItem(-1), true);
             }
         });
 
         binding.nextbtn.setOnClickListener(v -> {
-            if (getitem(0) < 2)
-                mSLideViewPager.setCurrentItem(getitem(1), true);
+            if (getItem(0) < 2)
+                mSLideViewPager.setCurrentItem(getItem(1), true);
             else {
                 // User has finished onboarding, navigate to the main activity
                 navigateToMainActivity();
@@ -113,7 +119,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         }
     };
 
-    private int getitem(int i) {
+    private int getItem(int i) {
         return mSLideViewPager.getCurrentItem() + i;
     }
 

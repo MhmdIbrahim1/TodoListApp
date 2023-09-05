@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">To.Do</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="home">Home</string>
-    <string name="add_task">AddTask</string>
+    <string name="add_task">Add Task</string>
     <string name="tasks_list">Tasks List</string>
     <string name="add_task_title">Add Task</string>
     <string name="listcheckbox">ListCheckBox</string>
@@ -26,7 +26,6 @@
     <string name="search">Search</string>
 
 
-
     //Headings
     <string name="heading_one">Add  &amp; Update Tasks Body and Title</string>
     <string name="heading_two">Easy Task Navigation and Title Search</string>
@@ -37,5 +36,28 @@
     <string name="desc_two">This process will introduce users to the convenient task navigation and search tasks in our app, enabling them to effortlessly manage and find tasks by their titles.</string>
     <string name="desc_three">This process will guide users through the process of deleting tasks individually or all at once, ensuring they have full control over their task management.
 </string>
+    <string name="nothing_to_delete">Nothing To Delte</string>
+    <string name="update">Update</string>
+    <string name="please_enter_a_title">Pleate Enter The Title</string>
+    <string name="task_updated">Task Updated</string>
+    <string name="task_added">Task Added</string>
+    <string name="please_select_the_date">Please select a date\"</string>
+    <string name="update_task">Update Task</string>
+    <string name="addtask">Add Task</string>
+    <string name="date">Date</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_title">Sort by title</string>
+    <string name="sort">Sort</string>
+    <string name="settings">Settings</string>
 
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>عربي (Arabic)</item>
+    </string-array>
+
+    <string name="arabic" translatable="false">Arabic (عربي)</string>
+    <string name="english" translatable="false">English</string>
+    <string name="language">Language</string>
+    <string name="todo_list">Todo-List</string>
 </resources>

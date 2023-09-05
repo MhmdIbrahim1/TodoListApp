@@ -16,33 +16,44 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "todo.db";
     private static final int DATABASE_VERSION = 2;
 
+
     // Task table name and columns
-    public static final String TASK_DATE = "date"; // Add this line for the date column
+    public static final String TASK_DATE = "date";
     public static final String TASK_TABLE = "task";
     public static final String TASK_ID = "id";
     public static final String TASK_TITLE = "title";
     public static final String TASK_TASK = "task";
     public static final String TASK_STATUS = "status";
 
+    // Constants for column names
+    private static final String COLUMN_TITLE = TASK_TITLE;
+    private static final String COLUMN_TASK = TASK_TASK;
+    private static final String COLUMN_DATE = TASK_DATE;
+    private static final String COLUMN_STATUS = TASK_STATUS;
 
-    // Create table statements
+
+
+    // Create table SQL query for the task table
     private static final String CREATE_TASK_TABLE = "CREATE TABLE " + TASK_TABLE + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TASK_TITLE + " TEXT, "
             + TASK_TASK + " TEXT, "
             + TASK_STATUS + " INTEGER, "
             + TASK_DATE + " INTEGER)";
 
+    // Constructor
     public DatabaseAdapter(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     private SQLiteDatabase db;
 
+    // Create the task table
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // Create the tables
         sqLiteDatabase.execSQL(CREATE_TASK_TABLE);
     }
 
+    // Upgrade the database
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         // Drop the tables
@@ -70,15 +81,21 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
         }
     }
 
-    // Insert a new task into the database
+    /**
+     * Insert a task into the database.
+     */
     public void insertTask(Task task) {
         ContentValues cv = new ContentValues();
         cv.put(TASK_TITLE, task.getTitle());
         cv.put(TASK_TASK, task.getTask());
         cv.put(TASK_STATUS, task.getStatus());
-        cv.put(TASK_DATE, task.getDate()); // Insert the date value
+        cv.put(TASK_DATE, task.getDate());
         db.insert(TASK_TABLE, null, cv);
     }
+
+    /**
+     * Update a task in the database.
+     */
 
     public void updateTask(int id, String title, String task, Long date) {
         ContentValues cv = new ContentValues();
@@ -89,49 +106,37 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Delete a task from the database.
+     */
 
     public void deleteTask(int id) {
         db.delete(TASK_TABLE, TASK_ID + "=?", new String[]{String.valueOf(id)});
     }
 
+    /**
+     * Update the status of a task in the database.
+     */
     public void updateStatus(int id, int status) {
         ContentValues cv = new ContentValues();
         cv.put(TASK_STATUS, status);
         db.update(TASK_TABLE, cv, TASK_ID + "=?", new String[]{String.valueOf(id)});
     }
 
-    // Get all tasks from the database
-    public List<Task> getAllTasks() {
-        List<Task> taskList = new ArrayList<>();
-        db.beginTransaction();
-        try (Cursor cur = db.query(TASK_TABLE, null, null, null, null, null, null, null)) {
-            // Query all rows from the todo table
-            if (cur != null) {
-                if (cur.moveToFirst()) {
-                    int idIndex = cur.getColumnIndex(TASK_ID);
-                    int titleIndex = cur.getColumnIndex(TASK_TITLE);
-                    int statusIndex = cur.getColumnIndex(TASK_STATUS);
-                    int taskIndex = cur.getColumnIndex(TASK_TASK);
-                    int dateIndex = cur.getColumnIndex(TASK_DATE); // Add this line for the date column
 
-                    do {
-                        // Create a Task object from the retrieved data
-                        Task task = new Task();
-                        task.setId(cur.getInt(idIndex));
-                        task.setTitle(cur.getString(titleIndex));
-                        task.setTask(cur.getString(taskIndex));
-                        task.setStatus(cur.getInt(statusIndex));
-                        task.setDate(cur.getLong(dateIndex)); // Add this line for the date column
-                        taskList.add(task); // Add the task to the list
-                    } while (cur.moveToNext());
-                }
-            }
-        } finally {
-            db.endTransaction(); // End the transaction
-            // Close the cursor
-        }
-        return taskList;
+    /**
+     * Update the date of a task in the database.
+     */
+
+    public void updateDate(int id, Long date) {
+        ContentValues cv = new ContentValues();
+        cv.put(TASK_DATE, date);
+        db.update(TASK_TABLE, cv, TASK_ID + "=?", new String[]{String.valueOf(id)});
     }
+
+    /**
+     * delete all tasks from the database.
+     */
     public void deleteAllTasks() {
         if (!db.isOpen()) {
             openDatabase();
@@ -146,37 +151,86 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Get all tasks from the database.
+     */
+    public List<Task> getAllTasks() {
+        List<Task> taskList = new ArrayList<>();
+        db.beginTransaction();
+        try (Cursor cursor = db.query(TASK_TABLE, null, null, null, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Task task = createTaskFromCursor(cursor);
+                    taskList.add(task);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            db.endTransaction();
+        }
+        return taskList;
+    }
+
+
     // Method to search for tasks in the database
     public List<Task> searchTasks(String searchQuery) {
         List<Task> taskList = new ArrayList<>();
         db.beginTransaction();
-        try (Cursor cur = db.query(TASK_TABLE, null, TASK_TITLE + " LIKE ? OR " + TASK_TASK + " LIKE ?", new String[]{"%" + searchQuery + "%", "%" + searchQuery + "%"}, null, null, null, null)) {
-            // Query all rows from the todo table
-            if (cur != null) {
-                if (cur.moveToFirst()) {
-                    int idIndex = cur.getColumnIndex(TASK_ID);
-                    int titleIndex = cur.getColumnIndex(TASK_TITLE);
-                    int statusIndex = cur.getColumnIndex(TASK_STATUS);
-                    int taskIndex = cur.getColumnIndex(TASK_TASK);
-                    int dateIndex = cur.getColumnIndex(TASK_DATE);
-
-                    do {
-                        // Create a Task object from the retrieved data
-                        Task task = new Task();
-                        task.setId(cur.getInt(idIndex));
-                        task.setTitle(cur.getString(titleIndex));
-                        task.setTask(cur.getString(taskIndex));
-                        task.setStatus(cur.getInt(statusIndex));
-                        task.setDate(cur.getLong(dateIndex));
-                        taskList.add(task); // Add the task to the list
-                    } while (cur.moveToNext());
-                }
+        try (Cursor cursor = db.query(
+                TASK_TABLE,
+                null,
+                COLUMN_TITLE + " LIKE ? OR " + COLUMN_TASK + " LIKE ?",
+                new String[]{"%" + searchQuery + "%", "%" + searchQuery + "%"},
+                null,
+                null,
+                null,
+                null
+        )) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Task task = createTaskFromCursor(cursor);
+                    taskList.add(task);
+                } while (cursor.moveToNext());
             }
         } finally {
-            db.endTransaction(); // End the transaction
-            // Close the cursor
+            db.endTransaction();
         }
         return taskList;
+    }
+
+
+    /**
+     * Helper method to create a Task object from a Cursor.
+     */
+
+    private Task createTaskFromCursor(Cursor cursor) {
+        Task task = new Task();
+        int idIndex = cursor.getColumnIndex(TASK_ID);
+        int titleIndex = cursor.getColumnIndex(COLUMN_TITLE);
+        int taskIndex = cursor.getColumnIndex(COLUMN_TASK);
+        int statusIndex = cursor.getColumnIndex(COLUMN_STATUS);
+        int dateIndex = cursor.getColumnIndex(COLUMN_DATE);
+
+        if (idIndex >= 0) {
+            task.setId(cursor.getInt(idIndex));
+        }
+
+        if (titleIndex >= 0) {
+            task.setTitle(cursor.getString(titleIndex));
+        }
+
+        if (taskIndex >= 0) {
+            task.setTask(cursor.getString(taskIndex));
+        }
+
+        if (statusIndex >= 0) {
+            task.setStatus(cursor.getInt(statusIndex));
+        }
+
+        if (dateIndex >= 0) {
+            task.setDate(cursor.getLong(dateIndex));
+        }
+
+        return task;
     }
 
 
