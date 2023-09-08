@@ -1,6 +1,7 @@
 package com.example.todolistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,14 +17,29 @@ import java.util.Objects;
 
 public class StartedScreenActivity extends AppCompatActivity {
 
+    boolean isDarkModeOn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Retrieve the language setting from SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences("Language", Context.MODE_PRIVATE);
-        String language = sharedPref.getString("language", "ar"); // default English if no setting is stored
+        String language = sharedPref.getString("language", "en"); // default English if no setting is stored
         // Set the language based on the stored setting
         LocaleHelper.setLocale(this, language);
+
+        sharedPref = getSharedPreferences("Mode", Context.MODE_PRIVATE);
+        if (sharedPref.contains("isDarkModeOn")) {
+            isDarkModeOn = sharedPref.getBoolean("isDarkModeOn", false); // Update if the key exists
+        }
+
+        if (isDarkModeOn) {
+            // Set the dark theme
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            // Set the light theme
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         setContentView(R.layout.activity_started_screen);
         changeStatusColor();

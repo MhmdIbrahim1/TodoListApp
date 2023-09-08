@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/background_color_general">
+    android:background="@color/background_color_general"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="25dp"
         android:orientation="vertical"
-        android:layout_marginTop="25dp">
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linear_english"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:background="@drawable/search_box_background"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_english"
+                style="@style/BigTextViewThin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/english"
-                style="@style/BigTextViewThin"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:padding="10dp"
-                android:textColor="@color/background_intro__mentv_2"
-                />
+                android:text="@string/english"
+                android:textColor="@color/background_intro__mentv_2" />
 
             <ImageView
                 android:id="@+id/img_english"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_picked"
                 android:layout_gravity="center"
-                app:tint="@color/g_hint"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_picked"
                 android:visibility="visible"
-                android:layout_marginEnd="5dp"/>
+                app:tint="@color/g_hint" />
 
         </LinearLayout>
 
@@ -53,35 +51,59 @@
             android:id="@+id/linear_arabic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="@drawable/search_box_background"
             android:layout_marginTop="15dp"
-            >
+            android:background="@drawable/search_box_background"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_arabic"
+                style="@style/BigTextViewThin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/arabic"
-                style="@style/BigTextViewThin"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:textColor="@color/background_intro__mentv_2"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:text="@string/arabic"
+                android:textColor="@color/background_intro__mentv_2" />
 
             <ImageView
                 android:id="@+id/img_arabic"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_picked"
                 android:layout_gravity="center"
-                app:tint="@color/g_hint"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_picked"
                 android:visibility="visible"
-                android:layout_marginEnd="5dp"/>
+                app:tint="@color/g_hint" />
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_12sdp"
+            >
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/app_switch_theme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:padding="10dp"
+                android:text="@string/theme"
+                android:textColor="@color/background_intro__mentv_2"
+                android:textSize="@dimen/_15ssp"
+                android:textStyle="bold"
+                app:switchMinWidth="@dimen/_50sdp"
+                app:switchPadding="@dimen/_10sdp"
+                app:switchTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

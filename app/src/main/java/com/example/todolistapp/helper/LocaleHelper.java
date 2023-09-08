@@ -1,6 +1,5 @@
 package com.example.todolistapp.helper;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -15,16 +14,11 @@ public class LocaleHelper {
     private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
 
     // The method is used to set the language at runtime
-    public static Context setLocale(Context context, String language) {
+    public static void setLocale(Context context, String language) {
         persist(context, language);
 
         // Updating the language for devices above Android Nougat
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return updateResources(context, language);
-        } else {
-            return updateResourcesLegacy(context, language);
-        }
-        // For devices having lower versions of Android OS
+        updateResources(context, language);
     }
 
     private static void persist(Context context, String language) {

@@ -234,4 +234,31 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
     }
 
 
+    // to search with title only
+//    public List<Task> searchTasks(String searchQuery) {
+//        List<Task> taskList = new ArrayList<>();
+//        db.beginTransaction();
+//        try (Cursor cursor = db.query(
+//                TASK_TABLE,
+//                null,
+//                COLUMN_TITLE + " LIKE ?",
+//                new String[]{"%" + searchQuery + "%"},
+//                null,
+//                null,
+//                null,
+//                null
+//        )) {
+//            if (cursor != null && cursor.moveToFirst()) {
+//                do {
+//                    Task task = createTaskFromCursor(cursor);
+//                    taskList.add(task);
+//                } while (cursor.moveToNext());
+//            }
+//        } finally {
+//            db.endTransaction();
+//        }
+//        return taskList;
+//    }
+
+
 }

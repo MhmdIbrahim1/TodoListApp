@@ -50,7 +50,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == (LinearLayout) object;
+        return view == object;
     }
 
     @NonNull
@@ -60,9 +60,9 @@ public class ViewPagerAdapter extends PagerAdapter {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.slider_layout, container, false);
 
-        ImageView slideTitleImage = (ImageView) view.findViewById(R.id.titleImage);
-        TextView slideHeading = (TextView) view.findViewById(R.id.texttitle);
-        TextView slideDescription = (TextView) view.findViewById(R.id.textdeccription);
+        ImageView slideTitleImage = view.findViewById(R.id.titleImage);
+        TextView slideHeading = view.findViewById(R.id.texttitle);
+        TextView slideDescription = view.findViewById(R.id.textdeccription);
 
         slideTitleImage.setImageResource(images[position]);
         slideHeading.setText(headings[position]);
@@ -74,8 +74,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-
         container.removeView((LinearLayout) object);
-
     }
 }

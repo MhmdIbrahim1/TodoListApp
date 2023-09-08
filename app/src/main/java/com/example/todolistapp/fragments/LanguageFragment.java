@@ -9,10 +9,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.MainActivity;
 import com.example.todolistapp.R;
 import com.example.todolistapp.databinding.FragmentLanguageBinding;
@@ -21,13 +24,14 @@ import java.util.Objects;
 
 public class LanguageFragment extends Fragment {
     private FragmentLanguageBinding binding;
-
+    private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = FragmentLanguageBinding.inflate(inflater, container, false);
+        sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE);
         return binding.getRoot();
     }
 
@@ -36,6 +40,8 @@ public class LanguageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         String currentLanguage = Locale.getDefault().getLanguage();
+
+        binding.appSwitchTheme.setChecked(sharedPreferences.getBoolean("isDarkModeOn", false));
 
         switch (currentLanguage) {
             case "en":
@@ -47,9 +53,26 @@ public class LanguageFragment extends Fragment {
 
         }
 
+        binding.linearEnglish.setOnClickListener(v -> changeLanguage("en"));
+
         binding.linearArabic.setOnClickListener(v -> changeLanguage("ar"));
 
-        binding.linearEnglish.setOnClickListener(v -> changeLanguage("en"));
+        binding.appSwitchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isDarkModeOn", isChecked);
+            editor.apply();
+
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
+
     }
 
     private void changeToArabic() {

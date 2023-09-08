@@ -100,6 +100,8 @@ public class HomeFragment extends Fragment {
 
         //set the list sort by date by default
         sortByDate();
+
+        binding.recyclerView.setItemViewCacheSize(1000);
     }
 
     //inflate the menu

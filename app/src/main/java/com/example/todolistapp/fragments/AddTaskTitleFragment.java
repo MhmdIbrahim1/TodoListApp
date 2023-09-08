@@ -88,7 +88,7 @@ public class AddTaskTitleFragment extends Fragment {
                         findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
                         // update the bottom navigation item to home
                         MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                        bottomNavigation.show(2, true);
+                        bottomNavigation.show(1, true);
                     }
                 } else {
                     if (selectedDate != null) {
@@ -99,7 +99,7 @@ public class AddTaskTitleFragment extends Fragment {
                         findNavController(v).navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
                         // update the bottom navigation item to home
                         MeowBottomNavigation bottomNavigation = requireActivity().findViewById(R.id.bottom_navigation);
-                        bottomNavigation.show(2, true);
+                        bottomNavigation.show(1, true);
                     } else {
                         Toast.makeText(requireContext(), R.string.please_select_the_date, Toast.LENGTH_SHORT).show();
                     }
@@ -160,4 +160,5 @@ public class AddTaskTitleFragment extends Fragment {
         }
     }
 
+    
 }

@@ -52,5 +52,7 @@
     <string name="language">اللغة</string>
     <string name="todo_list">قائمة المهام</string>
 
+    <string name="note_title">عنوان المذكرة</string>
+    <string name="note_description">محتوى المذكرة</string>
 
 </resources>

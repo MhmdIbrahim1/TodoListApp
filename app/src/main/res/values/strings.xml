@@ -60,4 +60,8 @@
     <string name="english" translatable="false">English</string>
     <string name="language">Language</string>
     <string name="todo_list">Todo-List</string>
+    <string name="note_title">Note Title</string>
+    <string name="note_description">Note Description</string>
+    <string name="app_theme">App Theme</string>
+    <string name="theme">Switch Theme</string>
 </resources>

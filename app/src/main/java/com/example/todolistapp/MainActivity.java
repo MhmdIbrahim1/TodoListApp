@@ -1,13 +1,14 @@
 package com.example.todolistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.databinding.ActivityMainBinding;
@@ -16,18 +17,33 @@ import com.example.todolistapp.helper.LocaleHelper;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
     private NavController navController;
 
     private MeowBottomNavigation bottomNavigation;
 
+    SharedPreferences sharedPref;
+    boolean isDarkModeOn = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         // Retrieve the language setting from SharedPreferences
-        SharedPreferences sharedPref = getSharedPreferences("Language", Context.MODE_PRIVATE);
-        String language = sharedPref.getString("language", "ar"); // default English if no setting is stored
+        sharedPref = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        String language = sharedPref.getString("language", "en"); // default English if no setting is stored
+
+
+        sharedPref = getSharedPreferences("Mode", Context.MODE_PRIVATE);
+        if (sharedPref.contains("isDarkModeOn")) {
+            isDarkModeOn = sharedPref.getBoolean("isDarkModeOn", false); // Update if the key exists
+        }
+
+        if (isDarkModeOn) {
+            // Set the dark theme
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            // Set the light theme
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         // Set the language based on the stored setting
         LocaleHelper.setLocale(this, language);
 
@@ -91,11 +107,6 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color, getTheme()));
     }
 
-
-    // Update the bottom navigation item
-    private void updateBottomNavigation() {
-    }
-
     @Override
     public void onBackPressed() {
         int currentDestinationId = Objects.requireNonNull(navController.getCurrentDestination()).getId();
@@ -104,13 +115,12 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         } else if (currentDestinationId == R.id.addTaskTitleFragment) {
             navController.navigate(R.id.action_addTaskTitleFragment_to_homeFragment);
-            bottomNavigation.show(2, true);
+            bottomNavigation.show(1, true);
         } else if (currentDestinationId == R.id.languageFragment) {
             navController.navigate(R.id.action_languageFragment_to_homeFragment);
-            bottomNavigation.show(2, true);
+            bottomNavigation.show(1, true);
         }
     }
-
 
 }
 

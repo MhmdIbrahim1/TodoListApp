@@ -1,6 +1,7 @@
 package com.example.todolistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.text.HtmlCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -29,6 +30,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "MyPrefsFile";
     private static final String ONBOARDING_COMPLETE_KEY = "onboardingComplete";
 
+    private boolean isDarkModeOn = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +38,25 @@ public class OnBoardingActivity extends AppCompatActivity {
 
         // Retrieve the language setting from SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences("Language", Context.MODE_PRIVATE);
-        String language = sharedPref.getString("language", "ar"); // default English if no setting is stored
+        String language = sharedPref.getString("language", "en"); // default English if no setting is stored
+
+
+        sharedPref = getSharedPreferences("Mode", Context.MODE_PRIVATE);
+        if (sharedPref.contains("isDarkModeOn")) {
+            isDarkModeOn = sharedPref.getBoolean("isDarkModeOn", false); // Update if the key exists
+        }
+
+        if (isDarkModeOn) {
+            // Set the dark theme
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            // Set the light theme
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         // Set the language based on the stored setting
         LocaleHelper.setLocale(this, language);
+
         setContentView(binding.getRoot());
 
         // Check if onboarding has been completed before
