@@ -58,7 +58,11 @@ public class Task {
             return false;
         }
         Task otherTask = (Task) obj;
-        return Objects.equals(title, otherTask.title);
+        return id == otherTask.id &&
+                status == otherTask.status &&
+                Objects.equals(title, otherTask.title) &&
+                Objects.equals(task, otherTask.task) &&
+                Objects.equals(date, otherTask.date);
     }
 
     public Long getDate() {

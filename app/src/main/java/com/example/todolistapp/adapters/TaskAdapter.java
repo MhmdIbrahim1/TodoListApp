@@ -30,7 +30,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         DiffUtil.ItemCallback<Task> diffCallback = new DiffUtil.ItemCallback<Task>() {
             @Override
             public boolean areItemsTheSame(@NonNull Task oldItem, @NonNull Task newItem) {
-                return oldItem.getTitle().equals(newItem.getTitle());
+                return oldItem.getId() == newItem.getId();
             }
 
             @Override
