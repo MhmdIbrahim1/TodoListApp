@@ -61,7 +61,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return differ.getCurrentList().size();
     }
 
-    public class TaskViewHolder extends RecyclerView.ViewHolder {
+    public static class TaskViewHolder extends RecyclerView.ViewHolder {
         private final ItemTaskTitleBinding binding;
         private final Calendar calendar = Calendar.getInstance();
 
@@ -101,9 +101,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             }
 
             // Open the date picker dialog and update the date
-            binding.todoDate.setOnClickListener(v -> {
-                showDatePickerDialog(task.getId());
-            });
+            binding.todoDate.setOnClickListener(v -> showDatePickerDialog(task.getId()));
         }
 
 

@@ -1,17 +1,16 @@
 package com.example.todolistapp.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,28 +21,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
-
-import androidx.appcompat.widget.SearchView; // Import the androidx SearchView class
-
+import androidx.appcompat.widget.SearchView;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.R;
 import com.example.todolistapp.data.db.DatabaseAdapter;
 import com.example.todolistapp.databinding.FragmentHomeBinding;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.todolistapp.adapters.TaskAdapter;
 import com.example.todolistapp.data.models.Task;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+
+@SuppressLint("NotifyDataSetChanged")
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TaskAdapter taskAdapter;
@@ -101,7 +97,7 @@ public class HomeFragment extends Fragment {
         //set the list sort by date by default
         sortByDate();
 
-        binding.recyclerView.setItemViewCacheSize(1000);
+        binding.recyclerView.setItemViewCacheSize(300);
     }
 
     //inflate the menu

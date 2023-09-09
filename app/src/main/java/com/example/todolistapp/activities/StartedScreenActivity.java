@@ -1,4 +1,4 @@
-package com.example.todolistapp;
+package com.example.todolistapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.todolistapp.R;
 import com.example.todolistapp.helper.LocaleHelper;
 
 import java.util.Objects;

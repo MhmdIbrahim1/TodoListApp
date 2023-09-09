@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.todolistapp.R;
@@ -117,23 +116,20 @@ public class AddTaskTitleFragment extends Fragment {
     private void showDatePickerDialog() {
         Context context = getContext();
         if (context != null) {
-            DatePickerDialog dialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
-                    String formattedDate = simpleDateFormat.format(new Date(year - 1900, month, day));
-                    binding.dateBtn.setText(formattedDate);
+            DatePickerDialog dialog = new DatePickerDialog(context, (datePicker, year, month, day) -> {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d", Locale.getDefault());
+                String formattedDate = simpleDateFormat.format(new Date(year - 1900, month, day));
+                binding.dateBtn.setText(formattedDate);
 
-                    calendar.set(year, month, day);
+                calendar.set(year, month, day);
 
-                    // To ignore time
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
+                // To ignore time
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
 
-                    selectedDate = calendar.getTimeInMillis(); // Store the selected date
-                }
+                selectedDate = calendar.getTimeInMillis(); // Store the selected date
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
         }

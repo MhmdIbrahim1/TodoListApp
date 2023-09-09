@@ -123,7 +123,6 @@ public class DatabaseAdapter extends SQLiteOpenHelper {
         db.update(TASK_TABLE, cv, TASK_ID + "=?", new String[]{String.valueOf(id)});
     }
 
-
     /**
      * Update the date of a task in the database.
      */

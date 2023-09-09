@@ -30,25 +30,13 @@ public class LocaleHelper {
 
     // The method is used to update the language of the application by creating
     // an object of the built-in Locale class and passing the language argument to it
-    private static Context updateResources(Context context, String language) {
+    private static void updateResources(Context context, String language) {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
         configuration.setLayoutDirection(locale);
-        return context.createConfigurationContext(configuration);
+        context.createConfigurationContext(configuration);
     }
 
-    private static Context updateResourcesLegacy(Context context, String language) {
-        Locale locale = new Locale(language);
-        Locale.setDefault(locale);
-        Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = locale;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            configuration.setLayoutDirection(locale);
-        }
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
-        return context;
-    }
 }

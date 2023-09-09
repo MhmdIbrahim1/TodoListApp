@@ -1,4 +1,4 @@
-package com.example.todolistapp;
+package com.example.todolistapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.todolistapp.R;
 import com.example.todolistapp.adapters.ViewPagerAdapter;
 import com.example.todolistapp.databinding.ActivityOnBoardingBinding;
 import com.example.todolistapp.helper.LocaleHelper;

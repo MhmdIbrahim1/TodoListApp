@@ -15,8 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
-import com.example.todolistapp.MainActivity;
+import com.example.todolistapp.activities.MainActivity;
 import com.example.todolistapp.R;
 import com.example.todolistapp.databinding.FragmentLanguageBinding;
 import java.util.Locale;

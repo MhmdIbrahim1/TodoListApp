@@ -1,8 +1,7 @@
-package com.example.todolistapp;
+package com.example.todolistapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -11,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.example.todolistapp.R;
 import com.example.todolistapp.databinding.ActivityMainBinding;
 import com.example.todolistapp.helper.LocaleHelper;
 
