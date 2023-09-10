@@ -1,4 +1,3 @@
-![Screenshot_1694363120](https://github.com/MhmdIbrahim1/TodoListApp/assets/107378571/ad2404a4-2a89-490d-9ca4-1d8d6b6b24bd)# ToDoList
 ToDoList_Java is a simple Android app that allows users to create, edit, and manage their tasks in a to-do list. The app provides a user-friendly interface for adding, updating, and deleting tasks.
 It utilizes the SQLite database to store task data and employs RecyclerView for efficient task list display.
 
